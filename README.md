@@ -13,13 +13,15 @@ Before you begin, ensure you have the following installed:
 ### Environment Setup
 To connect the app to your Supabase instance, create a `.env.local` file in the root directory and add the following environment variables:
 ```plaintext
+
 NEXT_PUBLIC_SUPABASE_URL=<your-supabase-project-url>
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-supabase-anon-key>
-``bash
+
 Replace <your-supabase-project-url> with your Supabase project URL (e.g., https://your-project.supabase.co).
 Replace <your-supabase-anon-key> with your Supabase anonymous API key (found in your Supabase dashboard under Settings > API).
 
-Database Migration and SeedingMigration:Set up a buyers table in your Supabase database with the following columns:id (UUID, primary key)
+ Database Migration and SeedingMigration:Set up a buyers table in your Supabase database with the following columns:id (UUID, primary key)
+
 full_name (text, not null)
 email (text)
 phone (text, not null)
@@ -43,63 +45,65 @@ Seeding:To populate the database with initial data, you can manually import a CS
 
 How to Run LocallyClone the Repository:Run the following commands to clone and navigate to the project directory:bash
 
-git clone https://github.com/DEVJDR/EsahayakCRM.git
-cd EsahayakCRm
-npm i
-npm run dev
+    git clone https://github.com/DEVJDR/EsahayakCRM.git
+    cd EsahayakCRm
+    npm i
+    npm run dev
 
 
 Open your browser and visit http://localhost:3000.
-Log in using the authentication flow (via AuthProvider) to access protected routes like /buyers, /buyers/new, /buyers/[id]/edit, 
-/buyers/import, and /buyers/export.
+ Log in using the authentication flow (via AuthProvider) to access protected routes like /buyers, /buyers/new, /buyers/[id]/edit, 
+ /buyers/import, and /buyers/export.
+
+
 
 Design NotesWhere Validation LivesLocation: 
-Validation rules are defined in the  "@/validators/buyer" module using a library like Zod. The buyerCreateSchema specifies the structure and constraints for BuyerInput, including required fields (e.g., full_name, phone) and enum values (e.g., bhk, status).
+ Validation rules are defined in the  "@/validators/buyer" module using a library like Zod. The buyerCreateSchema specifies the structure and constraints for BuyerInput, including required fields (e.g., full_name, phone) and enum values (e.g., bhk, status).
 
 Implementation:
  Client-side validation is performed in forms (e.g., EditBuyerPage, ImportPage) using safeParse to validate data before submission. Server-side validation is enforced by Supabase’s database constraints (e.g., not null fields).
 
 SSR vs ClientServer-Side Rendering (SSR):
- The application uses client components (marked with "use client") for pages like BuyersPage and EditBuyerPage to support dynamic data fetching and state management. SSR is not implemented due to the need for real-time user interactions and authentication state.
+The application uses client components (marked with "use client") for pages like BuyersPage and EditBuyerPage to support dynamic data fetching and state management. SSR is not implemented due to the need for real- time user interactions and authentication state.
 
 Client-Side Rendering (CSR): 
-All pages rely on client-side logic to fetch data from Supabase, manage filters, and handle form submissions. This approach ensures interactivity but may affect initial load times.
+ All pages rely on client-side logic to fetch data from Supabase, manage filters, and handle form submissions. This approach ensures interactivity but may affect initial load times.
 
 Ownership EnforcementMechanism: 
-Ownership is enforced by comparing the owner_id in the buyers table with the authenticated user’s ID (via useAuth). In EditBuyerPage, if the owner_id does not match the current user, an error is displayed to prevent unauthorized edits.
-Implementation: This check is performed during data fetching in a useEffect hook, ensuring permission is verified before loading the form.
+ Ownership is enforced by comparing the owner_id in the buyers table with the authenticated user’s ID (via useAuth). In EditBuyerPage, if the owner_id does not match the current user, an error is displayed to prevent unauthorized edits.
+ Implementation: This check is performed during data fetching in a useEffect hook, ensuring permission is verified before loading the form.
 
 What’s Done vs Skipped (and Why)
 
 DoneCore Functionality:
-
-Developed BuyersPage to list and filter buyer leads with pagination.
-Created EditBuyerPage for editing leads with form validation and concurrency checks.
-Built ImportPage and ExportPage for CSV-based data import and export using PapaParse.
-UI/UX:Enhanced all pages with modern styling (e.g., gradients, shadows, hover effects) using Tailwind CSS.
-Ensured responsiveness across mobile, tablet, and desktop with grid and flex layouts.
-Authentication:Integrated AuthProvider for user session management and route protection.
-Error Handling:Added ErrorBoundary components and detailed error messages for fetch and validation issues.
-Type Safety:Resolved TypeScript errors for PapaParse by installing @types/papaparse.
-Data Fetching:Implemented Supabase integration for CRUD operations with proper typing.
+ Developed BuyersPage to list and filter buyer leads with pagination.
+ Created EditBuyerPage for editing leads with form validation and concurrency checks.
+ Built ImportPage and ExportPage for CSV-based data import and export using PapaParse.
+ UI/UX:Enhanced all pages with modern styling (e.g., gradients, shadows, hover effects) using Tailwind CSS.
+ Ensured responsiveness across mobile, tablet, and desktop with grid and flex layouts.
+ Authentication:Integrated AuthProvider for user session management and route protection.
+ Error Handling:Added ErrorBoundary components and detailed error messages for fetch and validation issues.
+ Type Safety:Resolved TypeScript errors for PapaParse by installing @types/papaparse.
+ Data Fetching:Implemented Supabase integration for CRUD operations with proper typing.
 
 SkippedEnd-to-End (E2E) Tests:Why: 
 Prioritized core functionality and UI over testing due to time constraints. E2E tests (e.g., with Cypress) are planned but deferred to ensure a working prototype first.
 
 Performance Optimization:Why: 
-Focused on functionality and UI initially. Optimizations like lazy loading or memoization will be added later based on user feedback.
+ Focused on functionality and UI initially. Optimizations like lazy loading or memoization will be added later based on user feedback.
 
 Automated Seeding:Why: 
-Manual seeding via the Supabase dashboard or CSV import was sufficient for initial development. An automated seed script was skipped to avoid overcomplicating setup.
+ Manual seeding via the Supabase dashboard or CSV import was sufficient for initial development. An automated seed script was skipped to avoid overcomplicating setup.
 
-Advanced Features:Skipped features like bulk edit, advanced search, or real-time updates to focus on MVP (Minimum Viable Product) requirements.
+Advanced Features:
+ Skipped features like bulk edit, advanced search, or real-time updates to focus on MVP (Minimum Viable Product) requirements.
 
 Documentation:
-Omitted detailed API docs or contributor guidelines to prioritize code completion, with this README as the primary guide.
+ Omitted detailed API docs or contributor guidelines to prioritize code completion, with this README as the primary guide.
 
 Future ConsiderationsAdd E2E tests to validate workflows (e.g., import/export, form submission).
 
-Optimize performance with pagination improvements or caching.
-Enhance schema validation to handle conditional bhk requirements dynamically.
-Automate seeding with a script for easier setup.
+  Optimize performance with pagination improvements or caching.
+  Enhance schema validation to handle conditional bhk requirements dynamically.
+  Automate seeding with a script for easier setup.
 
