@@ -115,5 +115,5 @@ Future ConsiderationsAdd E2E tests to validate workflows (e.g., import/export, f
   Automate seeding with a script for easier setup.
 
 
-![login Page](https://github.com/DEVJDR/EsahayakCRM/blob/main/app/buyers/images/login.png?raw=true)
-![Dashboard](https://github.com/DEVJDR/EsahayakCRM/blob/main/app/buyers/images/dashboard.png?raw=true)
+![Login Page](https://raw.githubusercontent.com/DEVJDR/EsahayakCRM/main/app/buyers/images/login.png)
+![Dashboard](https://raw.githubusercontent.com/DEVJDR/EsahayakCRM/main/app/buyers/images/dashboard.png)
