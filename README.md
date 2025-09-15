@@ -44,7 +44,7 @@ Seeding:To populate the database with initial data, you can manually import a CS
 How to Run LocallyClone the Repository:Run the following commands to clone and navigate to the project directory:bash
 
 git clone https://github.com/DEVJDR/EsahayakCRM.git
-cd EsahayakCRm
+cd EsahayakCRM
 npm i
 npm run dev
 
@@ -103,3 +103,6 @@ Optimize performance with pagination improvements or caching.
 Enhance schema validation to handle conditional bhk requirements dynamically.
 Automate seeding with a script for easier setup.
 
+
+![login Page](/images/login.png)
+![Dashboard](/images/dashboard.png)

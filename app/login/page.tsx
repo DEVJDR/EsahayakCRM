@@ -23,36 +23,18 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const handleMagicLinkLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
-    if (error) {
-      setError(error.message);
-    } else {
-      setError("Check your email for the magic link!");
-    }
-  };
-
   const handleDemoLogin = async () => {
     const demoUser = { id: "demo-user-id", email: "demo@esahayakcrm.com", user_metadata: {} };
     const demoSession = { access_token: "demo-token", refresh_token: "demo-refresh-token", expires_at: Math.floor(Date.now() / 1000) + 3600, user: demoUser };
 
-    // Set the demo session using Supabase client
     await supabase.auth.setSession(demoSession);
-    document.cookie = "demo-session=true; path=/; max-age=3600; samesite=lax"; // Set demo cookie
+    document.cookie = "demo-session=true; path=/; max-age=3600; samesite=lax";
 
     setSession(demoSession, true);
-    // Force redirect after setting session
     console.log("handleDemoLogin: Forcing redirect to /buyers");
     router.push("/buyers");
   };
 
-  // Fallback redirect if user state updates
   useEffect(() => {
     if (user && user.id === "demo-user-id") {
       console.log("useEffect: Redirecting to /buyers due to demo user detection");
@@ -61,32 +43,32 @@ export default function LoginPage() {
   }, [user, router]);
 
   return (
-    <main className="flex h-screen items-center justify-center">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-4 text-center">E-Sahayak CRM Login</h1>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <form onSubmit={handleMagicLinkLogin} className="space-y-4">
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-white p-4">
+      <div className="w-full max-w-md p-6 sm:p-8 bg-white rounded-lg shadow-lg transform transition-all duration-300 hover:shadow-xl">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-6 text-center">
+          E-Sahayak CRM Login
+        </h1>
+        {error && (
+          <p className="text-red-600 mb-6 text-center bg-red-100 p-3 rounded-lg">
+            {error}
+          </p>
+        )}
+        <div className="space-y-6">
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
-            className="w-full p-2 border rounded"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-lg placeholder-gray-500 transition-all duration-200"
             required
           />
           <button
-            type="submit"
-            className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            onClick={handleDemoLogin}
+            className="w-full p-3 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200 text-lg font-semibold shadow-md hover:shadow-lg"
           >
-            Send Magic Link
+            Demo Login
           </button>
-        </form>
-        <button
-          onClick={handleDemoLogin}
-          className="w-full mt-4 p-2 bg-green-500 text-white rounded hover:bg-green-600"
-        >
-          Demo Login
-        </button>
+        </div>
       </div>
     </main>
   );
